@@ -1,0 +1,39 @@
+/*
+ * helloattiny.asm
+ *
+ *  Created: 21/03/2014 08:43:55 a.m.
+ *   Author: Lefo
+ */ 
+
+
+ .include "tn44def.inc"
+
+ .CSEG 
+	.org 0
+
+	RJMP inicio
+
+inicio:
+	LDI r16, 0b00000000
+	OUT DDRB, r16  ; PB2 entrada
+
+	LDI r16, 0b11111111
+	OUT DDRA, r16    ; PORTA como salida PA0 salida
+
+loop:
+	IN r17, PINB
+	andi r17, 0b00000100
+	cpi r17,0b00000000
+	BRNE apagar
+
+prender:
+	LDI r16,0b00000000
+	OUT PORTA, r16
+
+RJMP loop
+
+apagar:
+	LDI r16,0b10000000
+	OUT PORTA,r16
+
+RJMP loop
